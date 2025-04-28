@@ -1,7 +1,7 @@
 from typing import TypedDict, Annotated, Optional
 from langgraph.graph import add_messages, StateGraph, END
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, AIMessageChunk, ToolMessage
+from langchain_core.messages import HumanMessage, AIMessageChunk, ToolMessage, SystemMessage
 from dotenv import load_dotenv
 from langchain_community.tools.tavily_search import TavilySearchResults
 from fastapi import FastAPI, Query
@@ -25,14 +25,35 @@ search_tool = TavilySearchResults(
 
 tools = [search_tool]
 
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatOpenAI(model="gpt-4o-mini")
+
+# Add system message template
+SYSTEM_MESSAGE = """You are Code Infinity's AI Programming Assistant, developed by Ankit Malik. Your role is to:
+- Help users write, debug, and improve their code as a coding expert
+- Provide clear explanations of programming concepts
+- Suggest best practices and optimizations
+- Write clean, well-documented code examples
+- Answer technical questions accurately and concisely
+- Format all code responses using appropriate markdown code blocks with language tags
+
+You are part of the Code Infinity platform, designed to provide expert coding assistance.
+When introducing yourself, you can mention that you're "Code Infinity's AI Assistant, developed by Ankit Malik".
+"""
 
 llm_with_tools = llm.bind_tools(tools=tools)
 
 async def model(state: State):
-    result = await llm_with_tools.ainvoke(state["messages"])
+    # Add system message if this is the start of conversation
+    messages = state["messages"]
+    if len(messages) == 1:  # If only user message exists
+        messages = [
+            SystemMessage(content=SYSTEM_MESSAGE),
+            *messages
+        ]
+    
+    result = await llm_with_tools.ainvoke(messages)
     return {
-        "messages": [result], 
+        "messages": [result],
     }
 
 async def tools_router(state: State):
