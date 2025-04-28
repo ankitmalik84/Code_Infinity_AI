@@ -1,6 +1,6 @@
-# Perplexity 2.0
+# Code Infinity AI
 
-A modern, responsive AI chat interface with integrated web search functionality. Perplexity 2.0 provides a clean UI similar to Perplexity.ai, combining conversational AI with real-time search capabilities
+A modern, responsive AI chat interface with integrated web search functionality. Code Infinity AI provides a clean UI similar to Perplexity.ai, combining conversational AI with real-time search capabilities
 
 ## ✨ Features
 
@@ -12,7 +12,7 @@ A modern, responsive AI chat interface with integrated web search functionality.
 
 ## 🏗️ Architecture
 
-Perplexity 2.0 follows a client-server architecture:
+Code Infinity AI follows a client-server architecture:
 
 ### Client (Next.js + React)
 
@@ -42,7 +42,7 @@ Perplexity 2.0 follows a client-server architecture:
 
    ```bash
    git clone
-   cd perplexity_2.0
+   cd code_infinity_ai
 
    ```
 
@@ -108,7 +108,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🙏 Acknowledgments
 
-- Inspired by the UI and functionality of [Perplexity.ai](https://www.perplexity.ai/)
 - Built with [Next.js](https://nextjs.org/), [React](https://reactjs.org/), [FastAPI](https://fastapi.tiangolo.com/), and [LangGraph](https://github.com/langchain-ai/langgraph)
 - Powered by [OpenAI GPT-4o](https://openai.com/) and [Tavily Search API](https://tavily.com/)
 ````

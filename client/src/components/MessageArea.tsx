@@ -141,18 +141,28 @@ const SearchStages = ({ searchInfo }: SearchStagesProps) => {
 const MessageArea = ({ messages }: MessageAreaProps) => {
   return (
     <div
-      className="flex-grow overflow-y-auto bg-[#FCFCF8] border-b border-gray-100"
+      className="flex-grow overflow-y-auto bg-[#FCFCF8] border-b border-gray-100 relative"
       style={{ minHeight: 0 }}
     >
-      <div className="max-w-4xl mx-auto p-6">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 via-teal-50/50 to-blue-50/50 animate-gradient-x pointer-events-none"></div>
+
+      {/* Subtle floating particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute h-1 w-1 rounded-full bg-teal-400/20 animate-float-1 top-1/4 left-1/4"></div>
+        <div className="absolute h-1 w-1 rounded-full bg-purple-400/20 animate-float-2 top-1/2 right-1/4"></div>
+        <div className="absolute h-1 w-1 rounded-full bg-blue-400/20 animate-float-3 bottom-1/4 left-1/2"></div>
+      </div>
+
+      <div className="max-w-4xl mx-auto p-6 relative">
         {messages.map((message) => (
           <div
             key={message.id}
             className={`flex ${
               message.isUser ? "justify-end" : "justify-start"
-            } mb-5`}
+            } mb-5 animate-message-popup`}
           >
-            <div className="flex flex-col max-w-md">
+            <div className="flex flex-col max-w-[85%] w-full">
               {!message.isUser && message.searchInfo && (
                 <SearchStages searchInfo={message.searchInfo} />
               )}
@@ -160,14 +170,16 @@ const MessageArea = ({ messages }: MessageAreaProps) => {
               <div
                 className={`rounded-lg py-3 px-5 ${
                   message.isUser
-                    ? "bg-gradient-to-br from-[#5E507F] to-[#4A3F71] text-white rounded-br-none shadow-md"
-                    : "bg-[#F3F3EE] text-gray-800 border border-gray-200 rounded-bl-none shadow-sm prose prose-sm max-w-none"
-                }`}
+                    ? "bg-gradient-to-br from-[#5E507F] to-[#4A3F71] text-white rounded-br-none shadow-md hover:shadow-lg transition-shadow duration-200"
+                    : "bg-[#F3F3EE] text-gray-800 border border-gray-200 rounded-bl-none shadow-sm prose prose-sm max-w-none overflow-hidden hover:shadow-md transition-shadow duration-200"
+                } animate-message-slide`}
               >
                 {message.isLoading ? (
                   <PremiumTypingAnimation />
                 ) : message.content ? (
-                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                  <div className="prose-pre:max-w-full prose-pre:overflow-x-auto">
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </div>
                 ) : (
                   <span className="text-gray-400 text-xs italic">
                     Waiting for response...
