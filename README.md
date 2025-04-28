@@ -43,7 +43,6 @@ Code Infinity AI follows a client-server architecture:
    ```bash
    git clone
    cd code_infinity_ai
-
    ```
 
 2. **Set up the server**
@@ -53,30 +52,73 @@ Code Infinity AI follows a client-server architecture:
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install -r requirements.txt
-
    ```
 
 3. **Configure environment variables**  
    Create a `.env` file in the server directory:
    OPENAI_API_KEY=your_openai_api_key
    TAVILY_API_KEY=your_tavily_api_key
+
 4. **Set up the client**
 
-````bash
-cd ../client
-npm install
+   ```bash
+   cd ../client
+   npm install
+   ```
+
+### Docker Setup
+
+1. **Build and run with Docker Compose**
+
+   ```bash
+   docker-compose up --build
+   ```
+
+   This will build and start both the client and server containers.
+
+2. **Build containers separately**
+
+   For server:
+
+   ```bash
+   cd server
+   docker build -t code-infinity-server .
+   docker run -p 8000:8000 code-infinity-server
+   ```
+
+   For client:
+
+   ```bash
+   cd client
+   docker build -t code-infinity-client .
+   docker run -p 3000:3000 code-infinity-client
+   ```
+
+3. **Environment Variables with Docker**
+   - Create a `.env` file in the root directory
+   - Docker Compose will automatically use these variables
+   - For manual container runs, use:
+     ```bash
+     docker run --env-file .env -p 8000:8000 code-infinity-server
+     ```
 
 ### Running the Application
 
 1. **Start the server**
+
    ```bash
    cd server
    uvicorn app:app --reload
 
+   ```
+
 2. **Start the client**
+
    ```bash
    cd client
    npm run dev
+
+   ```
 
 3. **Open your browser and navigate to http://localhost:3000**
 
@@ -110,4 +152,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - Built with [Next.js](https://nextjs.org/), [React](https://reactjs.org/), [FastAPI](https://fastapi.tiangolo.com/), and [LangGraph](https://github.com/langchain-ai/langgraph)
 - Powered by [OpenAI GPT-4o](https://openai.com/) and [Tavily Search API](https://tavily.com/)
-````
